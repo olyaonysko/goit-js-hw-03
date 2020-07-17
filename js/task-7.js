@@ -1,3 +1,5 @@
+"use strict";
+
 const Transaction = {
   DEPOSIT: "deposit",
   WITHDRAW: "withdraw",
@@ -6,7 +8,6 @@ const Transaction = {
 const account = {
   balance: 0,
   transactions: [],
-  counterId: 0,
 
   /*
    * Метод створює і повертає об'єкт транзакції.
@@ -14,10 +15,9 @@ const account = {
    */
 
   createTransaction(amount, type) {
-    const transaction = {};
-    transaction.amount = amount;
-    transaction.type = type;
-    return transaction;
+    const id = this.transactions.length + 1;
+    const doTransaction = { id, type, amount };
+    return doTransaction;
   },
 
   /*
@@ -28,11 +28,8 @@ const account = {
    */
 
   deposit(amount) {
-    const transaction = this.createTransaction(amount, Transaction.DEPOSIT);
+    this.transactions.push(this.createTransaction(amount, Transaction.DEPOSIT));
     this.balance += amount;
-    transaction.id = this.counterId + 1;
-    this.counterId += 1;
-    this.transactions.push(transaction);
   },
 
   /*
@@ -47,13 +44,13 @@ const account = {
 
   withdraw(amount) {
     if (this.balance >= amount) {
-      const transaction = this.createTransaction(amount, Transaction.WITHDRAW);
       this.balance -= amount;
-      transaction.id = this.counterId + 1;
-      this.counterId += 1;
-      this.transactions.push(transaction);
+      this.transactions.push(
+        this.createTransaction(amount, Transaction.WITHDRAW)
+      );
+    } else {
+      console.log("На вашому рахунку недостатньо коштів.");
     }
-    console.log("На вашому рахунку недостатньо коштів.");
   },
 
   /*
@@ -61,7 +58,7 @@ const account = {
    */
 
   getBalance() {
-    console.log(`На вашому рахунку ${this.balance}$`);
+    return `На вашому рахунку ${this.balance}$`;
   },
 
   /*
@@ -71,10 +68,7 @@ const account = {
   getTransactionDetails(id) {
     for (const transaction of this.transactions) {
       if (transaction.id === id) {
-        console.log(
-          `id = ${id}, тип транзакції = ${this.transactions[id].type}, сума = ${this.transactions[id].amount}`
-        );
-        return;
+        return transaction;
       }
     }
   },
@@ -89,21 +83,20 @@ const account = {
     for (const transaction of this.transactions) {
       if (transaction.type === type) {
         total += transaction.amount;
-        console.log(`Загальна сума всіх історій транзакції: ${total}`);
       }
     }
-    return;
+    return total;
   },
 };
 
 // Перевірка:
-// account.getBalance();
+// console.log(account.getBalance());
 // account.deposit(1000);
-// account.getBalance();
-// account.getTransactionDetails(0);
-// account.deposit(1000);
-// account.getTransactionDetails(1);
+// console.log(account.getBalance());
 // account.withdraw(500);
-// account.getTransactionDetails(2);
-// account.getTransactionTotal("deposit");
-// account.getTransactionTotal("withdraw");
+// console.log(account.getBalance());
+// account.withdraw(1500);
+// account.deposit(10000);
+// console.log(account.getTransactionTotal("deposit"));
+// console.log(account.getTransactionTotal("withdraw"));
+// console.log(account.getTransactionDetails(3));
