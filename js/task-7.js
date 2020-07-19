@@ -16,8 +16,8 @@ const account = {
 
   createTransaction(amount, type) {
     const id = this.transactions.length + 1;
-    const doTransaction = { id, type, amount };
-    return doTransaction;
+    const transaction = { id, type, amount };
+    return transaction;
   },
 
   /*
@@ -43,13 +43,13 @@ const account = {
    */
 
   withdraw(amount) {
-    if (this.balance >= amount) {
+    if (amount > this.balance) {
+      console.log("На вашому рахунку недостатньо коштів.");
+    } else {
       this.balance -= amount;
       this.transactions.push(
         this.createTransaction(amount, Transaction.WITHDRAW)
       );
-    } else {
-      console.log("На вашому рахунку недостатньо коштів.");
     }
   },
 
@@ -58,7 +58,7 @@ const account = {
    */
 
   getBalance() {
-    return `На вашому рахунку ${this.balance}$`;
+    return this.balance;
   },
 
   /*
@@ -90,13 +90,13 @@ const account = {
 };
 
 // Перевірка:
-// console.log(account.getBalance());
+//  console.log(account.getBalance());
 // account.deposit(1000);
-// console.log(account.getBalance());
+//  console.log(account.getBalance());
 // account.withdraw(500);
 // console.log(account.getBalance());
 // account.withdraw(1500);
 // account.deposit(10000);
 // console.log(account.getTransactionTotal("deposit"));
 // console.log(account.getTransactionTotal("withdraw"));
-// console.log(account.getTransactionDetails(3));
+// console.log(account.getTransactionDetails(2));
