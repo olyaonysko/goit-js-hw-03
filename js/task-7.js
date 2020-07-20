@@ -45,12 +45,11 @@ const account = {
   withdraw(amount) {
     if (amount > this.balance) {
       console.log("На вашому рахунку недостатньо коштів.");
-    } else {
-      this.balance -= amount;
-      this.transactions.push(
-        this.createTransaction(amount, Transaction.WITHDRAW)
-      );
     }
+    this.balance -= amount;
+    this.transactions.push(
+      this.createTransaction(amount, Transaction.WITHDRAW)
+    );
   },
 
   /*
@@ -92,7 +91,7 @@ const account = {
 // Перевірка:
 //  console.log(account.getBalance());
 // account.deposit(1000);
-//  console.log(account.getBalance());
+// console.log(account.getBalance());
 // account.withdraw(500);
 // console.log(account.getBalance());
 // account.withdraw(1500);
